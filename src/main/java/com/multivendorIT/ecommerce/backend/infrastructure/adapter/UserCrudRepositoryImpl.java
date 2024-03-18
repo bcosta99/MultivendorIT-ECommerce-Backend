@@ -3,16 +3,13 @@ package com.multivendorIT.ecommerce.backend.infrastructure.adapter;
 import com.multivendorIT.ecommerce.backend.domain.model.User;
 import com.multivendorIT.ecommerce.backend.domain.port.IUserRepository;
 import com.multivendorIT.ecommerce.backend.infrastructure.mapper.UserMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@AllArgsConstructor
 public class UserCrudRepositoryImpl implements IUserRepository {
     private final IUserCrudRepository iUserCrudRepository;
-
-    public UserCrudRepositoryImpl(IUserCrudRepository iUserCrudRepository, UserMapper userMapper) {
-        this.iUserCrudRepository = iUserCrudRepository;
-        this.userMapper = userMapper;
-    }
 
     private final UserMapper userMapper;
 

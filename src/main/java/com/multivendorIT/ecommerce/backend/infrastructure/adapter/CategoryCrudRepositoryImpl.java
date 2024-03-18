@@ -3,17 +3,14 @@ package com.multivendorIT.ecommerce.backend.infrastructure.adapter;
 import com.multivendorIT.ecommerce.backend.domain.model.Category;
 import com.multivendorIT.ecommerce.backend.domain.port.ICategoryRepository;
 import com.multivendorIT.ecommerce.backend.infrastructure.mapper.CategoryMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@AllArgsConstructor
 public class CategoryCrudRepositoryImpl implements ICategoryRepository {
     private final ICategoryCrudRepository iCategoryCrudRepository;
     private final CategoryMapper categoryMapper;
-
-    public CategoryCrudRepositoryImpl(ICategoryCrudRepository iCategoryCrudRepository, CategoryMapper categoryMapper) {
-        this.iCategoryCrudRepository = iCategoryCrudRepository;
-        this.categoryMapper = categoryMapper;
-    }
 
     @Override
     public Category save(Category category) {
