@@ -23,6 +23,6 @@ public class CategoryService {
     }
 
     public void deleteById(Integer id){
-        iCategoryRepository.deleteById();
+        iCategoryRepository.deleteById(id);
     }
 }

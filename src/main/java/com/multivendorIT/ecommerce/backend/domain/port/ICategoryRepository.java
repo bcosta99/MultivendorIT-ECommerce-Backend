@@ -6,5 +6,5 @@ public interface ICategoryRepository {
     Category save(Category category);
     Iterable<Category> findAll();
     Category findById(Integer id);
-    void deleteById();
+    void deleteById(Integer id);
 }

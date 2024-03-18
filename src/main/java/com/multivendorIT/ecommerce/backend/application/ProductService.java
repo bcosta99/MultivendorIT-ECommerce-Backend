@@ -22,7 +22,7 @@ public class ProductService {
         return this.iProductRepository.findById(id);
     }
 
-    public void deleteByd(Integer id){
+    public void deleteById(Integer id){
         this.iProductRepository.deleteById(id);
     }
 }
