@@ -1,9 +1,6 @@
 package com.multivendorIT.ecommerce.backend.infrastructure.config;
 
-import com.multivendorIT.ecommerce.backend.application.CategoryService;
-import com.multivendorIT.ecommerce.backend.application.OrderService;
-import com.multivendorIT.ecommerce.backend.application.ProductService;
-import com.multivendorIT.ecommerce.backend.application.UserService;
+import com.multivendorIT.ecommerce.backend.application.*;
 import com.multivendorIT.ecommerce.backend.domain.port.ICategoryRepository;
 import com.multivendorIT.ecommerce.backend.domain.port.IOrderRepository;
 import com.multivendorIT.ecommerce.backend.domain.port.IProductRepository;
@@ -24,12 +21,18 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ProductService productService(IProductRepository iProductRepository){
-        return new ProductService(iProductRepository);
+    public ProductService productService(IProductRepository iProductRepository, UploadFile uploadFile){
+        return new ProductService(iProductRepository, uploadFile);
     }
 
     @Bean
     public OrderService orderService(IOrderRepository iOrderRepository){
         return new OrderService(iOrderRepository);
     }
+
+    @Bean
+    public UploadFile uploadFile(){
+        return new UploadFile();
+    }
+
 }
