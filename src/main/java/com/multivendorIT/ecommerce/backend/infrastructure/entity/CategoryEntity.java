@@ -1,6 +1,5 @@
 package com.multivendorIT.ecommerce.backend.infrastructure.entity;
 
-import com.multivendorIT.ecommerce.backend.domain.model.UserType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

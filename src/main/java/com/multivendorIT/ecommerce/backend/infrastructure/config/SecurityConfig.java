@@ -1,5 +1,6 @@
 package com.multivendorIT.ecommerce.backend.infrastructure.config;
 
+import com.multivendorIT.ecommerce.backend.infrastructure.jwt.JWTAuthorizationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +10,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
+
 public class SecurityConfig {
+    private final JWTAuthorizationFilter jwtAuthorizationFilter;
+    public SecurityConfig(JWTAuthorizationFilter jwtAuthorizationFilter) {
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -28,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/payments").hasRole("USER")
                         .requestMatchers("/api/v1/home/**").permitAll()
                         .requestMatchers("/api/v1/security/**").permitAll().anyRequest().authenticated()
-        );
+        ).addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

@@ -1,6 +1,8 @@
 package com.multivendorIT.ecommerce.backend.infrastructure.rest;
 
+import com.multivendorIT.ecommerce.backend.infrastructure.dto.JWTClient;
 import com.multivendorIT.ecommerce.backend.infrastructure.dto.UserDTO;
+import com.multivendorIT.ecommerce.backend.infrastructure.jwt.JWTGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
+    private final JWTGenerator jwtGenerator;
 
-    public LoginController(AuthenticationManager authenticationManager) {
+    public LoginController(AuthenticationManager authenticationManager, JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDTO){
+    public ResponseEntity<JWTClient> login(@RequestBody UserDTO userDTO){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken( userDTO.username(), userDTO.password())
         );
@@ -33,6 +37,9 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("Rol de user: {}", SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().toString());
 
-        return new ResponseEntity<>("Usuario logueado satisfactoriamente", HttpStatus.OK);
+        String token = jwtGenerator.getToken(userDTO.username());
+        JWTClient jwtClient = new JWTClient(token);
+
+        return new ResponseEntity<>(jwtClient, HttpStatus.OK);
     }
 }

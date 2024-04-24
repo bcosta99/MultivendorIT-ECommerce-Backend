@@ -2,7 +2,6 @@ package com.multivendorIT.ecommerce.backend.infrastructure.entity;
 
 import com.multivendorIT.ecommerce.backend.domain.model.UserType;
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
