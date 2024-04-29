@@ -11,6 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.sql.Array;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -29,11 +33,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf( csrf -> csrf.disable()).authorizeHttpRequests(
+        httpSecurity.cors(
+                cors -> cors.configurationSource(
+                        request -> {
+                            CorsConfiguration corsConfiguration = new CorsConfiguration();
+                            corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+                            corsConfiguration.setAllowedMethods(Arrays.asList("*"));
+                            corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+                            return corsConfiguration;
+                        }
+                )).
+                csrf( csrf -> csrf.disable()).authorizeHttpRequests(
                 aut -> aut.requestMatchers("/api/v1/admin/categories").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/products/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/orders").hasRole("USER")
-                        .requestMatchers("/api/v1/payments").hasRole("USER")
+                        .requestMatchers("/api/v1/payments/success").permitAll()
+                        .requestMatchers("/api/v1/payments/**").hasRole("USER")
+                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/api/v1/home/**").permitAll()
                         .requestMatchers("/api/v1/security/**").permitAll().anyRequest().authenticated()
         ).addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/security")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 public class RegistrationController {
     private final RegistrationService registrationService;
     private final BCryptPasswordEncoder passwordEncoder;
